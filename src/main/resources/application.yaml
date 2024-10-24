@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: File
+  servlet:
+    multipart:
+      max-file-size: 10MB
+  jpa:
+    generate-ddl: true
+  docker:
+    compose:
+      enabled: true
+server:
+  port: 8085
+
+
