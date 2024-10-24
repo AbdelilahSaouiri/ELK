@@ -1,6 +1,7 @@
 package net.ensah.file.service;
 
 import net.ensah.file.dto.request.ImageRequestDto;
+import net.ensah.file.dto.response.ImageResponseDto;
 import net.ensah.file.entity.Image;
 import net.ensah.file.repository.ImageRepository;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -23,7 +25,7 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public Image addNewImage(MultipartFile file, ImageRequestDto imageRequestDto) throws IOException {
+    public ImageResponseDto addNewImage(MultipartFile file, ImageRequestDto imageRequestDto) throws IOException {
         Path path = Paths.get(System.getProperty("user.home"), "ELK", "images");
        if(!Files.exists(path)){
            Files.createDirectories(path);
@@ -47,11 +49,26 @@ public class ImageService {
                 .height(imageRequestDto.height())
                 .location(imageRequestDto.location())
                 .tags(imageRequestDto.tags())
-                .uploadDate(imageRequestDto.uploadDate())
+                .uploadDate(Instant.now())
                 .build();
 
-        return imageRepository.save(image);
-
+        Image saved = imageRepository.save(image);
+        return  ImageResponseDto.builder()
+                .imageId(saved.getImageId())
+                .imageName(saved.getImageName())
+                .imagePath(filePath.toUri().toString())
+                .imageType(saved.getImageType())
+                .approvalStatus(saved.getApprovalStatus())
+                .author(saved.getAuthor())
+                .contentType(saved.getContentType())
+                .description(saved.getDescription())
+                .dominantColor(saved.getDominantColor())
+                .width(saved.getWidth())
+                .fileFormat(saved.getFileFormat())
+                .height(saved.getHeight())
+                .location(saved.getLocation())
+                .tags(saved.getTags())
+                .build();
     }
 
     public byte[] getByImage(String imageId) throws IOException {

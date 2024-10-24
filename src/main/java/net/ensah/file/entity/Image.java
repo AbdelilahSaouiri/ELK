@@ -6,7 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,10 +26,10 @@ public class Image {
     private String fileFormat;
     private Integer width;
     private Integer height;
-
     private Location location;
     private String dominantColor;
-    private LocalDate uploadDate;
+    @Field(type = FieldType.Date)
+    private Instant uploadDate;
     private String contentType;
     private String approvalStatus;
 

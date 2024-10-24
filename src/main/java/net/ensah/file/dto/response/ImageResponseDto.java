@@ -8,6 +8,7 @@ import java.util.List;
 
 @Builder
 public record ImageResponseDto(
+        String imageId,
         String imageName,
         String imageType,
         String imagePath,
@@ -18,7 +19,6 @@ public record ImageResponseDto(
         Integer height,
         Location location,
         String dominantColor,
-        LocalDate uploadDate,
         String contentType,
         String approvalStatus,
         List<String> tags
